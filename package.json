@@ -1,0 +1,7 @@
+{
+  "name": "simple-node-multiprocess",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "HOST=http://localhost && PORT=8000 && node index"
+  }
+}
