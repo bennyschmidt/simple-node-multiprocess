@@ -22,27 +22,34 @@ const numCPUs = availableParallelism();
 const onCluster = require('./events/cluster');
 const onWorker = require('./events/worker');
 
-/**
- * Main
- * A primary instance that serves as the load balancer
- * and manages child lifecycle events
- */
-
 if (cluster.isPrimary) {
   for (let i = 0; i < numCPUs; i++) {
+
+    /**
+     * Worker
+     * Spawn a child instance that handles requests
+     */
+
     onWorker(cluster.fork());
   }
 
-  onCluster(cluster);
-} else {
-  const ApiGateway = require('./api');
-
   /**
-   * Server
-   * A server instance for each CPU core
+   * Cluster
+   * Create a primary instance that serves as a load balancer
+   * and manages worker lifecycle events
    */
 
-  const server = http.createServer(ApiGateway(cluster));
+  onCluster(cluster);
+} else {
 
-  server.listen(PORT);
+  /**
+   * ApiGateway
+   * Route traffic to handlers
+   */
+
+  const ApiGateway = require('./api');
+
+  http
+    .createServer(ApiGateway(cluster))
+    .listen(PORT);
 }
