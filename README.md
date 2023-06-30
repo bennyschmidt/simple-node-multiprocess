@@ -1,18 +1,18 @@
- # Simple Node.js multi-process
+## Simple Node.js multi-process
 
- #####  A super simple Node.js multi-process API setup:
+####  A super simple Node.js multi-process API setup:
 
  - Parallelize your API
  - Simple boilerplate to get started
  - Deploy 1 app over a single port
 
-##### Try it
+#### Try it
 
 `npm start`
 
 `http://localhost:8000/v1/todos`
 
-##### How it works
+#### How it works
 
 A very simple server recursively handles requests.
 
@@ -33,22 +33,30 @@ That means if you run this on a machine with an 8-core CPU, the first instance w
 
 ![load balancer](requests.png)
 
-> Heavy traffic (or a DDoS attack) is handled by handing off excess work to available workers
+> The effects of heavy traffic, DDoS attacks, and uncaught errors are minimized by handing off excess work to available workers
 
 ![non-blocking io](nonblocking.png)
 
 > Non-blocking IO: The first tab (using Worker #3) is sending an unhandled erroneous request that causes the process to hang, while the second tab is still able to use the API via another worker (Worker #2)
 
-##### What's are use cases for doing it this way?
+#### What are use cases for doing it this way?
 
-**When you want to auto-scale available resources independent of using tools to scale entire apps**
+**When you want CPU-bound instances in the cloud**
 
-You can often cut costs on cloud platforms by running a single project served over a single port that manages its own resources ("vertical scaling"), rather than using platform tools and interfaces to scale out your instances ("horizontal scaling").
+It's more efficient to run a single project served over a single port that manages its own resources ("vertical scaling"), rather than using platform tools to scale out copies the moment you need more resources ("horizontal scaling"). In a cloud platform like AWS or GCP, you can allocate up to something like 96 CPUs per instance. With an API cluster designed in this way, you can take full advantage of what these cloud platforms offer and cut a lot of unnecessary costs.
+
+**When you don't want to mess with Kubernetes or cloud at all because it's all just devops hell!**
+
+For on-prem, this is a very easy scaling option that uses native Node.js utilities that leverage your OS' capabilities, without having to set up Kubernetes or any other orchestration software. It's also a good choice if you are using a host or cloud provider, and want auto-scaling, but don't want or need all that Kubernetes has to offer (be sure to configure your CPU allocation accordingly).
 
 **For networks other than worldwide web (robots, etc.)**
 
-If you are running a simple web server, perhaps on a Raspberry Pi for a robot, or some other non-traditional computing hardware that needs to receive web requests at scale.
+If you are running a simple web API on a non-conventional web server that needs to receive web requests at scale, like on a Raspberry Pi for a robot or other device, this is a simple way to take full advantage of that device's multi-core CPU.
 
 **It's cheaper, easier, lighter, and faster - so why not?**
 
-This is a simple boilerplate for anyone who wants to build a Node.js API that doesn't want to get lost in a framework, dev ops, or cloud provider configurations. This is just a native Node.js implementation (0 dependencies) derived from their provided example, set up for scale.
+This is just a native Node.js implementation (0 dependencies) derived from their provided example, set up for scale. I appreciate the power and flexibility that Node.js comes with out of the box: When resource requirements are low, it can naturally fall back to just using 1 worker to handle requests, and only when web traffic intensifies do other workers go online at random, taking on the excess requests.
+
+**"Sounds cool, but I like Express.js"**
+
+If you want use an API framework like Express, replace all the code in `/api/index.js` with your handlers or framework entry (ex. in Express: Your `app.get()`, `app.post()`, etc. handlers would go here.
