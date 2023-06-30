@@ -47,16 +47,20 @@ It's more efficient to run a single project served over a single port that manag
 
 **When you don't want to mess with Kubernetes or cloud at all because it's all just devops hell!**
 
-For on-prem, this is a very easy scaling option that uses native Node.js utilities that leverage your OS' capabilities, without having to set up Kubernetes or any other orchestration software. It's also a good choice if you are using a host or cloud provider, and want auto-scaling, but don't want or need all that Kubernetes has to offer (be sure to configure your CPU allocation accordingly).
+For on-prem, this is a very easy scaling option that uses native Node.js utilities that leverage your OS' capabilities, without having to set up Kubernetes or any other orchestration software.
 
 **For networks other than worldwide web (robots, etc.)**
 
 If you are running a simple web API on a non-conventional web server that needs to receive web requests at scale, like on a Raspberry Pi for a robot or other device, this is a simple way to take full advantage of that device's multi-core CPU.
 
-**It's cheaper, easier, lighter, and faster - so why not?**
+**It's cheap, easy, light, and fast - so why not?**
 
-This is just a native Node.js implementation (0 dependencies) derived from their provided example, set up for scale. I appreciate the power and flexibility that Node.js comes with out of the box: When resource requirements are low, it can naturally fall back to just using 1 worker to handle requests, and only when web traffic intensifies do other workers go online at random, taking on the excess requests.
+This is just a native Node.js implementation (0 dependencies) derived from their documented cluster example, set up for scale. I appreciate the power and flexibility that Node.js comes with out of the box: When resource requirements are low, it can naturally fall back to just using 1 worker to handle requests, and only when web traffic intensifies do other workers go online, taking on the excess requests.
 
-**"Sounds cool, but I like Express.js"**
+**"Sounds cool, but I like Express.js" or "I need WebSockets"**
 
-If you want use an API framework like Express, replace all the code in `/api/index.js` with your handlers or framework entry (ex. in Express: Your `app.get()`, `app.post()`, etc. handlers would go here.
+If you want to use an API framework like Express, replace all the code in `/api/index.js` with your router and framework entry (ex. in Express: Your `app.get()`, `app.post()`, etc. handlers would go here). For a WebSockets server, your `ApiGateway` would need to be modified to support message passing instead of HTTP requests. Other than that, it can work with either library.
+
+- Express.js Example (TBD)
+
+- Socket.io Example (TBD)
