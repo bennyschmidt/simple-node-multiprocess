@@ -37,7 +37,7 @@ That means if you run this on a machine with an 8-core CPU, the first instance w
 
 ![non-blocking io](nonblocking.png)
 
-> Non-blocking IO: Tab 1 is sending an unhandled erroneous request that causes the process to hang, while Tab 2 is still able to use the API via another worker
+> Non-blocking IO: The first tab (using Worker #3) is sending an unhandled erroneous request that causes the process to hang, while the second tab is still able to use the API via another worker (Worker #2)
 
 ##### What's are use cases for doing it this way?
 
