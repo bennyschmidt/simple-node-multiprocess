@@ -18,7 +18,7 @@ A very simple server recursively handles requests.
 
 On load, the server is treated as a "primary" node that forks 1 copy of itself for every CPU available.
 
-The copies run the same logic in `index.js` in parallel as needed, each creating HTTP servers and listening for `GET` and `POST` requests (in this example).
+The copies run the same logic in `index.js` in parallel as needed, each listening for `GET` and `POST` requests (in this example).
 That means if you run this on a machine with an 8-core CPU, the first instance will spawn 7 other copies, and manage all of their lifecycle events (`onExit` etc.).
 
 ![cores](cores.png)
