@@ -35,6 +35,10 @@ That means if you run this on a machine with an 8-core CPU, the first instance w
 
 > Heavy traffic (or a DDoS attack) is handled by handing off excess work to available workers
 
+![non-blocking io](nonblocking.png)
+
+> Non-blocking IO: Tab 1 is sending an unhandled erroneous request that causes the process to hang, while Tab 2 is still able to use the API via another worker
+
 ##### What's are use cases for doing it this way?
 
 **When you want to auto-scale available resources independent of using tools to scale entire apps**

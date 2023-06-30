@@ -3,21 +3,21 @@
  * Handles incoming HTTP requests
  */
 
-const getTodos = require('./get/todos');
-const postCreate = require('./post/create');
+const Routes = {
+  GET: {
+    '/v1/todos': require('./get/todos')
+  },
+  POST: {
+    '/v1/create': require('./post/create')
+  }
+};
 
 module.exports = cluster => (req, res) => {
   console.log(`Request handled by Worker #${cluster.worker.id}`);
 
-  // /v1/todos : GET
-
-  if (req.url === '/v1/todos' && req.method === 'GET') {
-    return getTodos(req, res);
-  }
-
-  // /v1/create : POST
-
-  if (req.url === '/v1/create' && req.method === 'POST') {
-    return postCreate(req, res);
+  try {
+    Routes[req.method]?.[req.url]?.(req, res);
+  } catch (error) {
+    console.log('API error:', error);
   }
 };
